@@ -97,24 +97,24 @@
                     <strong>{{ message|replace('korean: ', '')  }}</strong>
                   </div>
                 {% endif %}
-                {% if 'englisherror' in message %}
+                {% if 'enerror' in message %}
                   <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg4" style="display: block; color:black;">
-                    <strong>{{ message|replace('englisherror: ', '')  }}</strong>
+                    <strong>{{ message|replace('enerror: ', '')  }}</strong>
                   </div>
                 {% endif %}
-                {% if 'chineseerror' in message %}
+                {% if 'cherror' in message %}
                   <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg5" style="display: block; color:black;">
-                    <strong>{{ message|replace('chineseerror: ', '')  }}</strong>
+                    <strong>{{ message|replace('cherror: ', '')  }}</strong>
                   </div>
                 {% endif %}
-                {% if 'japaneseerror' in message %}
+                {% if 'japerror' in message %}
                   <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg6" style="display: block; color:black;">
-                    <strong>{{ message|replace('japaneseerror: ', '')  }}</strong>
+                    <strong>{{ message|replace('japerror: ', '')  }}</strong>
                   </div>
                 {% endif %}
-                {% if 'koreanerror' in message %}
+                {% if 'koerror' in message %}
                   <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg7" style="display: block; color:black;">
-                    <strong>{{ message|replace('koreanerror: ', '')  }}</strong>
+                    <strong>{{ message|replace('koerror: ', '')  }}</strong>
                   </div>
                 {% endif %}
                 {% if 'englishfile' in message %}
@@ -172,7 +172,8 @@
 
       <br>
       <!-- <h3 class="header center blue-text" style="margin-bottom: -35px;">EnglishTube</h3> -->
-      <h1 class="header center orange-text">Subtitle Generator</h1>
+      <!-- <h1 class="header center orange-text">Subtitle Generator</h1> -->
+      <h1 class="header center" style="color:#fb5fa3;">Subtitle Generator</h1>
       <div class="row center">
         <h5 class="header col s12 light">Generate English, Chinese, Japanese & Korean Subtitles.</h5>
       </div>
@@ -183,14 +184,14 @@
                 <label class="container">
                 <input type="checkbox" id="checkbox_upload">
                 <span class="checkmark"></span>
-                    Upload Vid
+                  <b>UploadVideo</b>
                 </label>      
             </div>
             <div class="form-check form-check-inline" id="url_checkbox">
                 <label class="container">
                 <input type="checkbox" id="checkbox_video">
                 <span class="checkmark"></span>
-                    Video Url
+                  <b>VideoUrl</b>
                 </label>  
             </div>  
         </center>
@@ -217,7 +218,7 @@
           <br>
           <center>
             <div class="col-md-6" id="submiten" style="display: block;">
-              <button type="submit" name="submit" value="submit" class="btn-large waves-effect waves-light orange" onclick="validateFile()">Generate English Subtitle</button>
+              <button type="submit" name="submit" value="submit" class="btn-large waves-effect waves-light" onclick="validateFile()">Generate English Subtitle</button>
             </div>
           </center>
         </form>
@@ -226,7 +227,7 @@
         <center>
           <div class="col-md-6" id="downen" style="display: none;">
             <a href="{{ url_for('downloadenglishsrt') }}" download="{{ url_for('downloadenglishsrt') }}">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Download English Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Download English Subtitle</button>
             </a>
           </div>
         </center>
@@ -245,42 +246,42 @@
           <br><br>
           <a href="{{ url_for('chainese') }}">
             <div class="col-md-6" id="submitch" style="display: none;">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Generate Chinese Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Generate Chinese Subtitle</button>
             </div>
           </a>
         </center>
         <center>
           <a href="{{ url_for('japanese') }}">
             <div class="col-md-6" id="submitja" style="display: none;">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Generate Japanese Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Generate Japanese Subtitle</button>
             </div>
           </a>
         </center>
         <center>
           <a href="{{ url_for('korean') }}">
             <div class="col-md-6" id="submitko" style="display: none;">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Generate Korean Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Generate Korean Subtitle</button>
             </div>
           </a>
         </center>
         <center>
           <a href="{{ url_for('downloadchainesesrt') }}" download="{{ url_for('downloadchainesesrt') }}">
             <div class="col-md-6" id="downch" style="display: none;">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Download Chinese Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Download Chinese Subtitle</button>
             </div>
           </a>
         </center>
         <center>
           <a href="{{ url_for('downloadjapanesesrt') }}" download="{{ url_for('downloadjapanesesrt') }}">
             <div class="col-md-6" id="downja" style="display: none;">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Download Japanese Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Download Japanese Subtitle</button>
             </div>
           </a>
         </center>
         <center>
           <a href="{{ url_for('downloadkoreansrt') }}" download="{{ url_for('downloadkoreansrt') }}">
             <div class="col-md-6" id="downko" style="display: none;">
-              <button type="submit" class="btn-large waves-effect waves-light orange">Download Korean Subtitle</button>
+              <button type="submit" class="btn-large waves-effect waves-light">Download Korean Subtitle</button>
             </div>
           </a>
         </center>
