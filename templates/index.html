@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Subtitle Generator</title>
+
+  <!-- CSS  -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="./static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="./static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  <style>  
+    *{
+      margin:0;
+      padding: 0;
+    }
+
+    body{
+      overflow-x: hidden;
+    }
+
+    .copyright {
+    display:block;
+    margin-top: 100px;
+    text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    }
+    .copyright a{
+    text-decoration: none;
+    color: #EE4E44;
+    }
+
+
+  /****** CODE ******/
+
+  .file-upload{display:block;text-align:center;font-family: Helvetica, Arial, sans-serif;font-size: 12px;}
+  .file-upload .file-select{display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
+  .file-upload .file-select .file-select-button{background:#dce4ec;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
+  .file-upload .file-select .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
+  .file-upload .file-select:hover{border-color:#34495e;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+  .file-upload .file-select:hover .file-select-button{background:#34495e;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+  .file-upload.active .file-select{border-color:#3fa46a;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+  .file-upload.active .file-select .file-select-button{background:#3fa46a;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+  .file-upload .file-select input[type=file]{z-index:100;cursor:pointer;position:absolute;height:100%;width:100%;top:0;left:0;opacity:0;filter:alpha(opacity=0);}
+  .file-upload .file-select.file-select-disabled{opacity:0.65;}
+  .file-upload .file-select.file-select-disabled:hover{cursor:default;display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;margin-top:5px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
+  .file-upload .file-select.file-select-disabled:hover .file-select-button{background:#dce4ec;color:#666666;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
+  .file-upload .file-select.file-select-disabled:hover .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
+    
+  </style>
+
+</head>
+
+<body>
+  <nav class="white lighten-1" role="navigation" style="height: 100px;">
+    <div class="nav-wrapper container">
+      <img src="{{ url_for('static', filename='/image/logo.png') }}" alt="logo" style="width: 20%; height: 100%; margin-left: -160px;">
+    </div>
+  </nav>
+
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <div class="col-md-6" id="home" style="display: none; margin-left: 850px;">
+        <a href="{{ url_for('home') }}">
+          <button type="submit" class="btn-large waves-effect waves-light" style="background-color: rgb(61, 57, 57);">New Upload Video</button>
+        </a>
+      </div>
+      <center>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                {% if 'english' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg" style="display: block; color:black;">
+                    <strong>{{ message|replace('english: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'chinese' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg1" style="display: block; color:black;">
+                    <strong>{{ message|replace('chinese: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'japanese' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg2" style="display: block; color:black;">
+                    <strong>{{ message|replace('japanese: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'korean' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg3" style="display: block; color:black;">
+                    <strong>{{ message|replace('korean: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'englisherror' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg4" style="display: block; color:black;">
+                    <strong>{{ message|replace('englisherror: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'chineseerror' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg5" style="display: block; color:black;">
+                    <strong>{{ message|replace('chineseerror: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'japaneseerror' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg6" style="display: block; color:black;">
+                    <strong>{{ message|replace('japaneseerror: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'koreanerror' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg7" style="display: block; color:black;">
+                    <strong>{{ message|replace('koreanerror: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'englishfile' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg8" style="display: block; color:black;">
+                    <strong>{{ message|replace('englishfile: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'chinesefile' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg9" style="display: block; color:black;">
+                    <strong>{{ message|replace('chinesefile: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'japanesefile' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg10" style="display: block; color:black;">
+                    <strong>{{ message|replace('japanesefile: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+                {% if 'koreanfile' in message %}
+                  <div class="alert alert-success alert-dismissible fade show col-md-6" role="alert" id="msg11" style="display: block; color:black;">
+                    <strong>{{ message|replace('koreanfile: ', '')  }}</strong>
+                  </div>
+                {% endif %}
+              {% endfor %}
+          {% endif %}
+        {% endwith %}
+               
+        <!-- required fields error message -->
+        <div class="col" id="flashMessage" style="display: none;">
+          <div class="alert alert-dismissible alert-success fade show col-md-6" style="background-color:#df4932; color: white">
+            <strong>Please select a file!</strong>
+          </div>
+        </div>
+        <!-- subtitle generating message -->
+        <div class="col" id="messagen" style="display: none;">
+          <div class="alert alert-dismissible alert-success fade show col-md-6" style="background-color:white; border-color:#3fa46a; border-width: 5px; color:black">
+            <strong>English Subtitle is generating....</strong>
+          </div>
+        </div>
+        <div class="col" id="messagech" style="display: none;">
+          <div class="alert alert-dismissible alert-success fade show col-md-6" style="background-color:white; border-color:#3fa46a; border-width: 5px; color:black">
+            <strong>Chinese Subtitle is generating....</strong>
+          </div>
+        </div>
+        <div class="col" id="messageja" style="display: none;">
+          <div class="alert alert-dismissible alert-success fade show col-md-6" style="background-color:white; border-color:#3fa46a; border-width: 5px; color:black">
+            <strong>Japanese Subtitle is generating....</strong>
+          </div>
+        </div>
+        <div class="col" id="messageko" style="display: none;">
+          <div class="alert alert-dismissible alert-success fade show col-md-6" style="background-color:white; border-color:#3fa46a; border-width: 5px; color:black">
+            <strong>Korean Subtitle is generating....</strong>
+          </div>
+        </div>
+      </center>
+
+      <br>
+      <!-- <h3 class="header center blue-text" style="margin-bottom: -35px;">EnglishTube</h3> -->
+      <h1 class="header center orange-text">Subtitle Generator</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Generate English, Chinese, Japanese & Korean Subtitles.</h5>
+      </div>
+
+      <div class="row">
+        <center>
+            <div class="form-check form-check-inline" id="upload_checkbox">
+                <label class="container">
+                <input type="checkbox" id="checkbox_upload">
+                <span class="checkmark"></span>
+                    Upload Vid
+                </label>      
+            </div>
+            <div class="form-check form-check-inline" id="url_checkbox">
+                <label class="container">
+                <input type="checkbox" id="checkbox_video">
+                <span class="checkmark"></span>
+                    Video Url
+                </label>  
+            </div>  
+        </center>
+     </div>
+        
+      <div class="row">
+        <form action='/subtitle_gen' method="post" id="sub_form" class="col s12" enctype="multipart/form-data">
+          <div class="form-group row mb-3" id="video_file" style="display: block;">
+            <div class="form-group col-md-12" id="file-upload" style="display: none;">
+              <label for="fileName" style="font-size: 20px;">Upload Video</label><br><br>
+                <div class="file-upload">
+                  <div class="file-select">
+                    <div class="file-select-button" id="fileName"><i class="fa fa-folder-open"></i>Browse</div>
+                    <div class="file-select-name" id="noFile">No file chosen...</div> 
+                    <input type="file" name="upload_video" id="upload_video" accept="video/mp4">
+                  </div>
+                </div>
+            </div>
+            <div class="video-url" id="url-video" style="display: none;">
+              <label for="video_url" style="font-size: 20px;">Video URL</label>
+              <input type="text" name="video_url" id="video_url">
+            </div>
+          </div>
+          <br>
+          <center>
+            <div class="col-md-6" id="submiten" style="display: block;">
+              <button type="submit" name="submit" value="submit" class="btn-large waves-effect waves-light orange" onclick="validateFile()">Generate English Subtitle</button>
+            </div>
+          </center>
+        </form>
+
+        <!-- English Download Button -->
+        <center>
+          <div class="col-md-6" id="downen" style="display: none;">
+            <a href="{{ url_for('downloadenglishsrt') }}" download="{{ url_for('downloadenglishsrt') }}">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Download English Subtitle</button>
+            </a>
+          </div>
+        </center>
+
+        <div class="form-group col-md-12" id="sub_lang" style="display: none;">
+          <label for="sub" style="font-size: 20px;">Subtitle Language</label><br><br>
+          <select id="sub" name="sub_lang" class="form-control" required style="border-width: 3px;">
+            <option selected>Choose Option</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Korean">Korean</option>
+          </select>
+        </div>
+
+        <center>
+          <br><br>
+          <a href="{{ url_for('chainese') }}">
+            <div class="col-md-6" id="submitch" style="display: none;">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Generate Chinese Subtitle</button>
+            </div>
+          </a>
+        </center>
+        <center>
+          <a href="{{ url_for('japanese') }}">
+            <div class="col-md-6" id="submitja" style="display: none;">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Generate Japanese Subtitle</button>
+            </div>
+          </a>
+        </center>
+        <center>
+          <a href="{{ url_for('korean') }}">
+            <div class="col-md-6" id="submitko" style="display: none;">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Generate Korean Subtitle</button>
+            </div>
+          </a>
+        </center>
+        <center>
+          <a href="{{ url_for('downloadchainesesrt') }}" download="{{ url_for('downloadchainesesrt') }}">
+            <div class="col-md-6" id="downch" style="display: none;">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Download Chinese Subtitle</button>
+            </div>
+          </a>
+        </center>
+        <center>
+          <a href="{{ url_for('downloadjapanesesrt') }}" download="{{ url_for('downloadjapanesesrt') }}">
+            <div class="col-md-6" id="downja" style="display: none;">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Download Japanese Subtitle</button>
+            </div>
+          </a>
+        </center>
+        <center>
+          <a href="{{ url_for('downloadkoreansrt') }}" download="{{ url_for('downloadkoreansrt') }}">
+            <div class="col-md-6" id="downko" style="display: none;">
+              <button type="submit" class="btn-large waves-effect waves-light orange">Download Korean Subtitle</button>
+            </div>
+          </a>
+        </center>
+      </div>
+    </div>
+  </div>
+  <br><br><br><br><br><br><br><br>
+  <footer class="page-footer light-blue lighten-1" style="margin-bottom: -20px;">
+    <div class="container">
+      <div class="row">
+        <h6>Developed by XCugas Technology</h6>
+        <p>&copy; 2023 EnglishTube. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script>
+    // Checkbox hide and show
+    $('input#checkbox_video').on('change', function() {
+        $('input#checkbox_upload').prop('checked', false);  
+    });
+    $('input#checkbox_upload').on('change', function() {
+        $('input#checkbox_video').prop('checked', false);  
+    });
+    
+    $("#checkbox_upload").click(function() {
+        if($(this).is(":checked")) {
+            document.getElementById('file-upload').style.display = "block";
+            document.getElementById('url-video').style.display = "none";
+        }
+    });
+    
+    $("#checkbox_video").click(function() {
+        if($(this).is(":checked")) {
+            document.getElementById('file-upload').style.display = "none";
+            document.getElementById('url-video').style.display = "block";
+        }
+    });
+
+    // Upload Video
+    $('#upload_video').bind('change', function () {
+      var filename = $("#upload_video").val();
+      if (/^\s*$/.test(filename)) {
+        $(".file-upload").removeClass('active');
+        $("#noFile").text("No file chosen..."); 
+      }
+      else {
+        $(".file-upload").addClass('active');
+        $("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+      }
+    });
+
+    // Validate file 
+    // function validateFile() {
+    //   var fileInput = document.getElementById('upload_video');
+    //   if (fileInput.files.length === 0) {
+    //     var flashMessage = document.getElementById('flashMessage');
+    //     flashMessage.style.display = 'block';
+    //     if (flashMessage.style.display === 'block'){
+    //       document.getElementById('messagen').style.display = "none";
+    //     }
+    //     event.preventDefault(); // Prevent form submission
+    //   }
+    //   else
+    //   {
+    //     document.getElementById('messagen').style.display = "block";
+    //     document.getElementById('flashMessage').style.display = "none";
+    //   }
+    // }
+
+    // Hide & Show for drop-down
+    
+    $(function() {
+      $('#sub').change(function() { 
+        if($(this).val() === 'Chinese'){
+          document.getElementById('submitch').style.display = "block";
+          document.getElementById('submitja').style.display = "none";
+          document.getElementById('submitko').style.display = "none";
+          document.getElementById('downja').style.display = "none";
+          document.getElementById('downko').style.display = "none";
+        }
+        else if($(this).val() === 'Japanese'){
+          document.getElementById('submitja').style.display = "block";
+          document.getElementById('submitch').style.display = "none";
+          document.getElementById('submitko').style.display = "none";
+          document.getElementById('downch').style.display = "none";
+          document.getElementById('downko').style.display = "none";
+        }
+        else if($(this).val() === 'Korean'){
+          document.getElementById('submitko').style.display = "block";
+          document.getElementById('submitch').style.display = "none";
+          document.getElementById('submitja').style.display = "none";
+          document.getElementById('downch').style.display = "none";
+          document.getElementById('downja').style.display = "none";
+        }
+        else{
+          document.getElementById('submitch').style.display = "none";
+          document.getElementById('submitko').style.display = "none";
+          document.getElementById('submitja').style.display = "none";
+          document.getElementById('downch').style.display = "none";
+          document.getElementById('downja').style.display = "none";
+          document.getElementById('downko').style.display = "none";
+        }
+      });
+    });
+
+    $("#submiten").click(function() {
+      document.getElementById('messagen').style.display = "block";
+    });
+
+    $("#submitch").click(function() {
+      document.getElementById('messagech').style.display = "block";
+    });
+
+    $("#submitja").click(function() {
+      document.getElementById('messageja').style.display = "block";
+    });
+
+    $("#submitko").click(function() {
+      document.getElementById('messageko').style.display = "block";
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var success_message = document.getElementById('msg');
+      if (success_message && window.getComputedStyle(success_message).display === "block") {
+        document.getElementById('downen').style.display = "block";
+        document.getElementById('sub_lang').style.display = "block";
+        document.getElementById('home').style.display = "block";
+        document.getElementById('submiten').style.display = "none";
+        $('#upload_checkbox').hide()
+        $('#url_checkbox').hide()
+      }
+
+      var success_msg1 = document.getElementById('msg1');
+      if (success_msg1 && window.getComputedStyle(success_msg1).display === "block") {
+        document.getElementById('downch').style.display = "block";
+        document.getElementById('sub_lang').style.display = "block";
+        document.getElementById('home').style.display = "block";
+        document.getElementById('submiten').style.display = "none";
+        document.getElementById('submitch').style.display = "none";
+        $('#upload_checkbox').hide()
+        $('#url_checkbox').hide()
+      }
+
+      var success_msg2 = document.getElementById('msg2');
+      if (success_msg2 && window.getComputedStyle(success_msg2).display === "block") {
+        document.getElementById('downja').style.display = "block";
+        document.getElementById('sub_lang').style.display = "block";
+        document.getElementById('home').style.display = "block";
+        document.getElementById('submiten').style.display = "none";
+        document.getElementById('submitja').style.display = "none";
+        $('#upload_checkbox').hide()
+        $('#url_checkbox').hide()
+      }
+
+      var success_msg3 = document.getElementById('msg3');
+      if (success_msg3 && window.getComputedStyle(success_msg3).display === "block") {
+        document.getElementById('downko').style.display = "block";
+        document.getElementById('sub_lang').style.display = "block";
+        document.getElementById('home').style.display = "block";
+        document.getElementById('submiten').style.display = "none";
+        document.getElementById('submitko').style.display = "none";
+        $('#upload_checkbox').hide()
+        $('#url_checkbox').hide()
+      }
+    });
+    
+    $("#msg").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg").slideUp(500);
+    });
+    $("#msg1").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg1").slideUp(500);
+    });
+    $("#msg2").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg2").slideUp(500);
+    });
+    $("#msg3").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg3").slideUp(500);
+    });
+    $("#msg4").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg4").slideUp(500);
+    });
+    $("#msg5").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg5").slideUp(500);
+    });
+    $("#msg6").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg6").slideUp(500);
+    });
+    $("#msg7").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg7").slideUp(500);
+    });
+    $("#msg8").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg8").slideUp(500);
+    });
+    $("#msg9").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg9").slideUp(500);
+    });
+    $("#msg10").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg10").slideUp(500);
+    });
+    $("#msg11").fadeTo(5000, 500).slideUp(500, function(){
+    $("#msg11").slideUp(500);
+    });
+</script>
+</body>
+</html>
